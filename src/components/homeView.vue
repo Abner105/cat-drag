@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Jewel
  * @Date: 2022-09-28 16:15:22
- * @LastEditTime: 2022-09-29 16:17:36
+ * @LastEditTime: 2022-09-29 17:46:13
  * @LastEditors: Jewel
 -->
 <template>
@@ -42,6 +42,9 @@
         </div>
       </template>
     </draggable>
+    <div class="mask" v-if="over">
+      <div>GAME OVER!!!</div>
+    </div>
   </div>
 </template>
 
@@ -57,7 +60,8 @@ export default defineComponent({
   setup() {
     const state = reactive({
       maoArray,
-      maoArray2: []
+      maoArray2: [],
+      over:false
     })
     const endDrag = () => {
       const len = state.maoArray2.length
@@ -69,6 +73,9 @@ export default defineComponent({
 
       if(last1===last2 && last2===last3){
         state.maoArray2.splice(len-3,3)
+      }
+      if(state.maoArray2.length>=10){
+        state.over=true
       }
     }
 
@@ -105,8 +112,24 @@ export default defineComponent({
   border: 3px green solid;
 }
 .res-group {
+  width: 1000px;
+  margin: 0 auto;
   height: 100px;
   border: 5px solid greenyellow;
   display: flex;
+}
+.mask{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(179, 179, 179, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  font-size: 32px;
+  color: #ffffff;
+  font-weight: 600;
+  text-align: center;
+  line-height: 100vh;
 }
 </style>
