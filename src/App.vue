@@ -1,27 +1,27 @@
+<!--
+ * @Description: 
+ * @Author: Jewel
+ * @Date: 2022-09-28 15:56:45
+ * @LastEditTime: 2022-09-28 16:52:56
+ * @LastEditors: Jewel
+-->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <homeView/>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent } from 'vue'
+import homeView from './components/homeView.vue';
 
 export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-});
+    name: "App",
+    components: { homeView }
+})
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
