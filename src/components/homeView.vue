@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Jewel
  * @Date: 2022-09-28 16:15:22
- * @LastEditTime: 2022-09-29 17:46:13
+ * @LastEditTime: 2022-09-30 16:43:19
  * @LastEditors: Jewel
 -->
 <template>
@@ -13,6 +13,7 @@
       item-key="index"
       group="mao"
       :sort="false"
+      filter=".cover"
     >
       <template #item="{ element }">
         <div
@@ -22,7 +23,9 @@
             left: element.y + 'px',
             zIndex: element.pos
           }"
+          :class="{ cover: element.isCover }"
         >
+          <div class="iscover" v-if="element.isCover"></div>
           <img :src="element.path" alt="" />
         </div>
       </template>
@@ -33,7 +36,7 @@
       :list="maoArray2"
       group="mao"
       @change="endDrag"
-      item-key="id"
+      item-key="index"
       :sort="false"
     >
       <template #item="{ element }">
@@ -45,37 +48,45 @@
     <div class="mask" v-if="over">
       <div>GAME OVER!!!</div>
     </div>
+    <div class="mask" v-if="complete">
+      <div>通关了!!!</div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 import draggable from 'vuedraggable'
-import { maoArray, oneMao } from '@/utils/mao'
+import { catList, oneCat ,checkCover,mergeCat} from '@/utils/mao'
 
 export default defineComponent({
   components: {
     draggable
   },
   setup() {
+    
+    checkCover(catList)
     const state = reactive({
-      maoArray,
+      maoArray: catList,
       maoArray2: [],
-      over:false
+      over: false,
+      complete:false
     })
     const endDrag = () => {
+      checkCover(state.maoArray)
+      console.log(state.maoArray)
+
       const len = state.maoArray2.length
       if (len < 3) return
-      const last1 = (state.maoArray2[len - 1] as oneMao).id,
-        last2 = (state.maoArray2[len - 2] as oneMao).id,
-        last3 = (state.maoArray2[len - 3] as oneMao).id
-      console.log(state.maoArray2, len, state.maoArray2[len - 1], last1)
-
-      if(last1===last2 && last2===last3){
-        state.maoArray2.splice(len-3,3)
+      
+      mergeCat(state.maoArray2)
+      // 游戏结束
+      if (state.maoArray2.length >= 7) {
+        state.over = true
       }
-      if(state.maoArray2.length>=10){
-        state.over=true
+      // 通关了
+      if (state.maoArray.length === 0) {
+        state.complete = true
       }
     }
 
@@ -94,34 +105,40 @@ export default defineComponent({
 
 <style scoped>
 .item img {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
+}
+.item .iscover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .list-group {
   position: relative;
-  width: 500px;
-  height: 500px;
-  border: 5px solid red;
-  margin: 20px auto;
-  border: 5px solid skyblue;
+  width: 350px;
+  height: 350px;
+  margin: 40px auto;
 }
 .list-group .item {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  border: 3px green solid;
+  width: 50px;
+  height: 50px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 }
+
 .res-group {
-  width: 1000px;
-  margin: 0 auto;
-  height: 100px;
-  border: 5px solid greenyellow;
+  width: 350px;
+  margin: 80px auto 0;
+  height: 50px;
+  border: 5px solid #666;
+  border-radius: 4px;
   display: flex;
 }
-.mask{
+.mask {
   width: 100vw;
   height: 100vh;
-  background-color: rgba(179, 179, 179, 0.5);
+  background-color: rgba(63, 63, 63, 0.5);
   position: absolute;
   top: 0;
   left: 0;

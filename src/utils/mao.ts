@@ -2,619 +2,81 @@
  * @Description: 
  * @Author: Jewel
  * @Date: 2022-09-29 14:20:20
- * @LastEditTime: 2022-09-29 16:05:44
+ * @LastEditTime: 2022-09-30 16:38:31
  * @LastEditors: Jewel
  */
-export interface oneMao {
+
+
+
+export interface oneCat {
   id: number
-  name: string
+  icon: string
   path: string
   x: number
   y: number
-  pos:number
+  pos: number
+  isCover: boolean
+}
+const getIconPath = (icon: string): string => {
+  return require(`@/assets/img/${icon}.jpeg`)
 }
 
-const getNumber = function(min:number,max:number):number{
+const getNumber = function (min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min)
 }
-const min = 0,max=400
 
-export const maoArray: Array<oneMao> = [
-  {
-    id: 1,
-    name: 'mao1',
-    path: require('@/assets/img/mao1.jpeg'),
-    x: getNumber(min,max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 2,
-    name: 'mao2',
-    path: require('@/assets/img/mao2.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
+const iconList: string[] = ['mao1', 'mao2', 'mao3', 'mao4', 'mao5', 'mao6','mao7','mao8','mao9','mao10','mao11']
 
-  },
-  {
-    id: 3,
-    name: 'mao3',
-    path: require('@/assets/img/mao3.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 4,
-    name: 'mao4',
-    path: require('@/assets/img/mao4.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 5,
-    name: 'mao5',
-    path: require('@/assets/img/mao5.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
+const min = 0, max = 300, rowMin = 1, rowMax = 5
 
-  },
-  {
-    id: 6,
-    name: 'mao6',
-    path: require('@/assets/img/mao6.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 7,
-    name: 'mao7',
-    path: require('@/assets/img/mao7.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 8,
-    name: 'mao8',
-    path: require('@/assets/img/mao8.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
+const getCatList = () => {
+  const catList: Array<oneCat> = []
+  let i = 3
+  while (i--) {
+    iconList.forEach(icon => {
+      catList.push({
+        id: Math.random(),
+        icon,
+        path: getIconPath(icon),
+        x: getNumber(min, max),
+        y: getNumber(min, max),
+        pos: getNumber(rowMin, rowMax),
+        isCover: false
+      })
+    })
+  }
+  return catList
+}
 
-  },
-  {
-    id: 9,
-    name: 'mao9',
-    path: require('@/assets/img/mao9.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 10,
-    name: 'mao10',
-    path: require('@/assets/img/mao10.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 11,
-    name: 'mao11',
-    path: require('@/assets/img/mao11.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 12,
-    name: 'mao12',
-    path: require('@/assets/img/mao12.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
+export const catList = getCatList()
 
-  },
-  {
-    id: 13,
-    name: 'mao13',
-    path: require('@/assets/img/mao13.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 14,
-    name: 'mao14',
-    path: require('@/assets/img/mao14.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 15,
-    name: 'mao15',
-    path: require('@/assets/img/mao15.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
+export const checkCover = (list: Array<oneCat>): void => {
+  const len = list.length
+  list.forEach(item => {
+    item.isCover = false
+  })
+  for (let i = 0; i < len - 1; i++) {
+    const curcat = list[i]
+    for (let j = i + 1; j < len; j++) {
+      const otherCat = list[j]
+      if (!(curcat.x >= otherCat.x + 50 || otherCat.x >= curcat.x + 50 || curcat.y >= otherCat.y + 50 || otherCat.y >= curcat.y + 50)) {
+        if (curcat.pos > otherCat.pos) {
+          otherCat.isCover = true
+        } else {
+          curcat.isCover = true
+        }
+      }
+    }
+  }
+}
 
-  },
-  {
-    id: 16,
-    name: 'mao16',
-    path: require('@/assets/img/mao16.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 17,
-    name: 'mao17',
-    path: require('@/assets/img/mao17.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 18,
-    name: 'mao18',
-    path: require('@/assets/img/mao18.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 19,
-    name: 'mao19',
-    path: require('@/assets/img/mao19.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 20,
-    name: 'mao20',
-    path: require('@/assets/img/mao20.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 21,
-    name: 'mao21',
-    path: require('@/assets/img/mao21.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 22,
-    name: 'mao22',
-    path: require('@/assets/img/mao22.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 23,
-    name: 'mao23',
-    path: require('@/assets/img/mao23.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 24,
-    name: 'mao24',
-    path: require('@/assets/img/mao24.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 1,
-    name: 'mao1',
-    path: require('@/assets/img/mao1.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 2,
-    name: 'mao2',
-    path: require('@/assets/img/mao2.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 3,
-    name: 'mao3',
-    path: require('@/assets/img/mao3.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 4,
-    name: 'mao4',
-    path: require('@/assets/img/mao4.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 5,
-    name: 'mao5',
-    path: require('@/assets/img/mao5.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 6,
-    name: 'mao6',
-    path: require('@/assets/img/mao6.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 7,
-    name: 'mao7',
-    path: require('@/assets/img/mao7.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 8,
-    name: 'mao8',
-    path: require('@/assets/img/mao8.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 9,
-    name: 'mao9',
-    path: require('@/assets/img/mao9.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 10,
-    name: 'mao10',
-    path: require('@/assets/img/mao10.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 11,
-    name: 'mao11',
-    path: require('@/assets/img/mao11.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 12,
-    name: 'mao12',
-    path: require('@/assets/img/mao12.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 13,
-    name: 'mao13',
-    path: require('@/assets/img/mao13.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 14,
-    name: 'mao14',
-    path: require('@/assets/img/mao14.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 15,
-    name: 'mao15',
-    path: require('@/assets/img/mao15.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 16,
-    name: 'mao16',
-    path: require('@/assets/img/mao16.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 17,
-    name: 'mao17',
-    path: require('@/assets/img/mao17.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 18,
-    name: 'mao18',
-    path: require('@/assets/img/mao18.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 19,
-    name: 'mao19',
-    path: require('@/assets/img/mao19.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 20,
-    name: 'mao20',
-    path: require('@/assets/img/mao20.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 21,
-    name: 'mao21',
-    path: require('@/assets/img/mao21.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 22,
-    name: 'mao22',
-    path: require('@/assets/img/mao22.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 23,
-    name: 'mao23',
-    path: require('@/assets/img/mao23.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 24,
-    name: 'mao24',
-    path: require('@/assets/img/mao24.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 1,
-    name: 'mao1',
-    path: require('@/assets/img/mao1.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 2,
-    name: 'mao2',
-    path: require('@/assets/img/mao2.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 3,
-    name: 'mao3',
-    path: require('@/assets/img/mao3.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 4,
-    name: 'mao4',
-    path: require('@/assets/img/mao4.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 5,
-    name: 'mao5',
-    path: require('@/assets/img/mao5.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 6,
-    name: 'mao6',
-    path: require('@/assets/img/mao6.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 7,
-    name: 'mao7',
-    path: require('@/assets/img/mao7.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 8,
-    name: 'mao8',
-    path: require('@/assets/img/mao8.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 9,
-    name: 'mao9',
-    path: require('@/assets/img/mao9.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 10,
-    name: 'mao10',
-    path: require('@/assets/img/mao10.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 11,
-    name: 'mao11',
-    path: require('@/assets/img/mao11.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 12,
-    name: 'mao12',
-    path: require('@/assets/img/mao12.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 13,
-    name: 'mao13',
-    path: require('@/assets/img/mao13.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 14,
-    name: 'mao14',
-    path: require('@/assets/img/mao14.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 15,
-    name: 'mao15',
-    path: require('@/assets/img/mao15.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 16,
-    name: 'mao16',
-    path: require('@/assets/img/mao16.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 17,
-    name: 'mao17',
-    path: require('@/assets/img/mao17.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 18,
-    name: 'mao18',
-    path: require('@/assets/img/mao18.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 19,
-    name: 'mao19',
-    path: require('@/assets/img/mao19.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 20,
-    name: 'mao20',
-    path: require('@/assets/img/mao20.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 21,
-    name: 'mao21',
-    path: require('@/assets/img/mao21.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 22,
-    name: 'mao22',
-    path: require('@/assets/img/mao22.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-
-  },
-  {
-    id: 23,
-    name: 'mao23',
-    path: require('@/assets/img/mao23.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-  {
-    id: 24,
-    name: 'mao24',
-    path: require('@/assets/img/mao24.jpeg'),
-    x: getNumber(min, max),
-    y: getNumber(min, max),
-    pos: getNumber(min, max),
-  },
-]
+export const mergeCat = (list: Array<oneCat>): void => {
+  let i = 0
+  while (i < list.length - 2) {
+    if (list[i].icon === list[i + 1].icon && list[i + 1].icon === list[i + 2].icon) {
+      list.splice(i,3)
+    }else{
+      i++
+    }
+  }
+}
