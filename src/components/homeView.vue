@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 import draggable from 'vuedraggable'
-import { getList, checkCover, mergeIcon } from '@/utils/mao'
+import { getList, checkCover, mergeIcon } from '@/utils/iconDeal'
 
 export default defineComponent({
   components: {
