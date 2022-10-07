@@ -8,6 +8,7 @@
 <template>
 
   <div class="mask">
+    <!-- 只有2关，写死了 -->
     <div v-if="level<2">过关了!!!</div>
     <div v-else>恭喜通关了!!!</div>
     <button @click="$emit('next')" v-if="level<2">下一关</button>
@@ -25,9 +26,6 @@ export default defineComponent({
       default:1
     },
   },
-  // setup() {
-
-  // }
 })
 </script>
 

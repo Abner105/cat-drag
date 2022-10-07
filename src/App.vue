@@ -21,11 +21,16 @@ import failView from './components/failView.vue'
 
 export default defineComponent({
   name: "App",
-  components: { homeView, successView, failView },
+  components: {
+    homeView, successView, failView,
+  },
   setup() {
+    // 游戏结束
     let over = ref<boolean>(false)
+    // 游戏过关
     let complete = ref<boolean>(false)
     let level = ref<number>(1)
+    // 下一关
     const nextLevel = () => {
       level.value++
       complete.value = false
