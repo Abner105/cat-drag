@@ -1,12 +1,3 @@
-/*
- * @Description: 
- * @Author: Jewel
- * @Date: 2022-09-29 14:20:20
- * @LastEditTime: 2022-09-30 16:38:31
- * @LastEditors: Jewel
- */
-
-
 
 export interface oneCat {
   id: number
@@ -17,29 +8,33 @@ export interface oneCat {
   pos: number
   isCover: boolean
 }
+
+// 获取icon图片
 const getIconPath = (icon: string): string => {
-  return require(`@/assets/img/${icon}.jpeg`)
+  return require(`@/assets/img/${icon}.png`)
 }
 
+// 获取随机数字
 const getNumber = function (min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min) + min)
+  return Math.round(Math.random() * (max - min) + min)
 }
 
-const iconList: string[] = ['mao1', 'mao2', 'mao3', 'mao4', 'mao5', 'mao6','mao7','mao8','mao9','mao10','mao11']
 
-const min = 0, max = 300, rowMin = 1, rowMax = 5
 
-const getCatList = () => {
+// 获取数据
+export const getCatList = (level: number) => {
   const catList: Array<oneCat> = []
-  let i = 3
+  const iconList: string[] = ['fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5', 'fruit6', 'fruit7', 'fruit8', 'fruit9', 'fruit10']
+  const minCol = 0, maxCol = 4,minRow = 0, maxRow = level*2 >4?4:level*2, rowMin = 1, rowMax = 5
+  let i = level*3
   while (i--) {
-    iconList.forEach(icon => {
+    iconList.slice(0, 3**(level**2)).forEach(icon => {
       catList.push({
         id: Math.random(),
         icon,
         path: getIconPath(icon),
-        x: getNumber(min, max),
-        y: getNumber(min, max),
+        x: getNumber(minCol, maxCol*50),
+        y: getNumber(minRow, maxRow*2) * 25,
         pos: getNumber(rowMin, rowMax),
         isCover: false
       })
@@ -48,7 +43,6 @@ const getCatList = () => {
   return catList
 }
 
-export const catList = getCatList()
 
 export const checkCover = (list: Array<oneCat>): void => {
   const len = list.length
@@ -74,8 +68,8 @@ export const mergeCat = (list: Array<oneCat>): void => {
   let i = 0
   while (i < list.length - 2) {
     if (list[i].icon === list[i + 1].icon && list[i + 1].icon === list[i + 2].icon) {
-      list.splice(i,3)
-    }else{
+      list.splice(i, 3)
+    } else {
       i++
     }
   }
